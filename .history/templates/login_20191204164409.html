@@ -31,6 +31,7 @@
     <script>
       $('#signinButton').click(function () {
         function signInCallback(authResult) {
+          alert('callback');
           if (authResult['code']) {
             // Hide the sign-in button now that the user is authorized
             $('#signinButton').attr('style', 'display:none');
@@ -62,3 +63,51 @@
     </script>
   </body>
 </html>
+<!-- <html lang="en">
+  <head>
+    <meta name="google-signin-scope" content="https://www.googleapis.com/auth/userinfo.profile">
+    <meta name="google-signin-client_id" content="912512216400-sh43pehai0nc3pn7q4n5o4gpq9sk17bs.apps.googleusercontent.com">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+  </head>
+  <body>
+    <div id="signinButton" >
+    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark">
+    </div>
+    </div>
+    <script>
+      function onSignIn(authResult) {
+        console.log(authResult)
+        if (authResult) {
+          console.log(authResult)
+          // Hide the sign-in button now that the user is authorized
+          $('#signinButton').attr('style', 'display: none');
+          // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+          $.ajax({
+            type: 'POST',
+            url: '/gconnect?state={{STATE}}',
+            processData: false,
+            data: authResult['code'],
+            contentType: 'application/octet-stream; charset=utf-8',
+            success: function(result) {
+              console.log('result', result)
+              // Handle or verify the server response if necessary.
+              if (result) {
+                $('#signinButton').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+              //  setTimeout(function() {
+              //   console.log('Redirect')
+                window.location.href = "/";
+              //  }, 4000);
+                
+            } else if (authResult['error']) {
+          console.log('There was an error: ' + authResult['error']);
+        } else {
+              $('#signinButton').html('Failed to make a server-side call. Check your configuration and console.');
+                }
+            }
+            
+        }); } }
+      </script>
+            
+  </body>
+</html> -->

@@ -327,7 +327,7 @@ def deleteCategory(category_id):
     session.commit()
     return redirect(url_for('home'))
   else:
-    return render_template('deleteCategory.html',category = categoryToDelete)
+    return render_template('deleteCategory.html',restaurant = restaurantToDelete)
 
 
 # Show items in a particular category.

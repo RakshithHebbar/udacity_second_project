@@ -297,7 +297,7 @@ def add_category():
         session.commit()
         return redirect(url_for('home'))
     else:
-        return render_template('newCategory.html')
+        return render_template('newCategory.html', restaurant = editedCategory)
 
 
 #Edit a Category
@@ -312,7 +312,7 @@ def editCategory(category_id):
         flash('Category Successfully Edited %s' % editedCategory.name)
         return redirect(url_for('home'))
   else:
-    return render_template('editCategory.html', category = editedCategory)
+    return render_template('editCategory.html', restaurant = editedCategory)
 
 
 #Delete a category
@@ -327,7 +327,7 @@ def deleteCategory(category_id):
     session.commit()
     return redirect(url_for('home'))
   else:
-    return render_template('deleteCategory.html',category = categoryToDelete)
+    return render_template('deleteCategory.html',restaurant = restaurantToDelete)
 
 
 # Show items in a particular category.
@@ -397,7 +397,7 @@ def add_item_by_category(category_id):
         flash('New Menu %s Item Successfully Created' % (newItem.name))
         return redirect(url_for('show_items_in_category', category_id = category_id))
     else:
-        return render_template('newitem.html', category = category, category_id = category_id)
+        return render_template('newitem.html', category_id = category_id)
 
 @app.route('/catalog/category/<int:category_id>/item/<int:item_id>/edit', methods=['GET','POST'])
 def edit_item(category_id,item_id):
@@ -411,12 +411,10 @@ def edit_item(category_id,item_id):
             editedItem.name = request.form['name']
         if request.form['description']:
             editedItem.description = request.form['description']
-        if request.form['category']:
-            editedItem.category_id =  request.form['category']
         session.add(editedItem)
         session.commit() 
         flash('Item Successfully Edited')
-        return redirect(url_for('show_items_in_category', category_id = request.form['category']))
+        return redirect(url_for('show_items_in_category', category_id = category_id))
     else:
         return render_template('edit_item.html', category_id = category_id, item_id = item_id, item = editedItem, categories = categories)
 

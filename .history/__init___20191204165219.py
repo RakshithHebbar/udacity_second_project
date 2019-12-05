@@ -288,16 +288,16 @@ def home():
 #Add a Category
 @app.route('/category/new/', methods = ['GET', 'POST'])
 def add_category():
-    if 'username' not in login_session:
+  if 'username' not in login_session:
         return redirect('/login')  
-    if request.method == 'POST':
-        newCategory = Category(name = request.form['name'] , user_id=login_session['user_id'])
-        session.add(newCategory)
-        flash('New Category %s Successfully Created' % newCategory.name)
-        session.commit()
-        return redirect(url_for('home'))
-    else:
-        return render_template('newCategory.html')
+   if request.method == 'POST':
+      newCategory = Category(name = request.form['name'] , user_id=login_session['user_id'])
+      session.add(newCategory)
+      flash('New Category %s Successfully Created' % newCategory.name)
+      session.commit()
+      return redirect(url_for('home'))
+  else:
+    return render_template('newCategory.html', restaurant = editedCategory)
 
 
 #Edit a Category
@@ -312,7 +312,7 @@ def editCategory(category_id):
         flash('Category Successfully Edited %s' % editedCategory.name)
         return redirect(url_for('home'))
   else:
-    return render_template('editCategory.html', category = editedCategory)
+    return render_template('editCategory.html', restaurant = editedCategory)
 
 
 #Delete a category
@@ -327,7 +327,7 @@ def deleteCategory(category_id):
     session.commit()
     return redirect(url_for('home'))
   else:
-    return render_template('deleteCategory.html',category = categoryToDelete)
+    return render_template('deleteCategory.html',restaurant = restaurantToDelete)
 
 
 # Show items in a particular category.
@@ -384,21 +384,6 @@ def view_item(item_id):
         flash('We are unable to process your request right now.')
         return redirect(url_for('home'))
 
-#Create a new  item
-@app.route('/category/<int:category_id>/new/',methods=['GET','POST'])
-def add_item_by_category(category_id):
-    if 'username' not in login_session:
-        return redirect('/login')
-    category = session.query(Category).filter_by(id = category_id).one()
-    if request.method == 'POST':
-        newItem = Item(name = request.form['name'], description = request.form['description'], category_id = category_id, user_id=category.user_id)
-        session.add(newItem)
-        session.commit()
-        flash('New Menu %s Item Successfully Created' % (newItem.name))
-        return redirect(url_for('show_items_in_category', category_id = category_id))
-    else:
-        return render_template('newitem.html', category = category, category_id = category_id)
-
 @app.route('/catalog/category/<int:category_id>/item/<int:item_id>/edit', methods=['GET','POST'])
 def edit_item(category_id,item_id):
     """ if 'username' not in login_session:
@@ -411,12 +396,10 @@ def edit_item(category_id,item_id):
             editedItem.name = request.form['name']
         if request.form['description']:
             editedItem.description = request.form['description']
-        if request.form['category']:
-            editedItem.category_id =  request.form['category']
         session.add(editedItem)
         session.commit() 
         flash('Item Successfully Edited')
-        return redirect(url_for('show_items_in_category', category_id = request.form['category']))
+        return redirect(url_for('show_items_in_category', category_id = category_id))
     else:
         return render_template('edit_item.html', category_id = category_id, item_id = item_id, item = editedItem, categories = categories)
 

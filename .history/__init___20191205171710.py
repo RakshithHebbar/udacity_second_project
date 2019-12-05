@@ -312,7 +312,7 @@ def editCategory(category_id):
         flash('Category Successfully Edited %s' % editedCategory.name)
         return redirect(url_for('home'))
   else:
-    return render_template('editCategory.html', category = editedCategory)
+    return render_template('editCategory.html')
 
 
 #Delete a category
@@ -327,7 +327,7 @@ def deleteCategory(category_id):
     session.commit()
     return redirect(url_for('home'))
   else:
-    return render_template('deleteCategory.html',category = categoryToDelete)
+    return render_template('deleteCategory.html',restaurant = restaurantToDelete)
 
 
 # Show items in a particular category.
@@ -412,11 +412,12 @@ def edit_item(category_id,item_id):
         if request.form['description']:
             editedItem.description = request.form['description']
         if request.form['category']:
-            editedItem.category_id =  request.form['category']
+            newcategory = session.query(Category).filter_by(id = request.form['category']).one()
+            editedItem.category = newcategory.id
         session.add(editedItem)
         session.commit() 
         flash('Item Successfully Edited')
-        return redirect(url_for('show_items_in_category', category_id = request.form['category']))
+        return redirect(url_for('show_items_in_category', category_id = newcategory.id))
     else:
         return render_template('edit_item.html', category_id = category_id, item_id = item_id, item = editedItem, categories = categories)
 

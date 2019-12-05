@@ -312,7 +312,7 @@ def editCategory(category_id):
         flash('Category Successfully Edited %s' % editedCategory.name)
         return redirect(url_for('home'))
   else:
-    return render_template('editCategory.html', category = editedCategory)
+    return render_template('editCategory.html')
 
 
 #Delete a category
@@ -327,7 +327,7 @@ def deleteCategory(category_id):
     session.commit()
     return redirect(url_for('home'))
   else:
-    return render_template('deleteCategory.html',category = categoryToDelete)
+    return render_template('deleteCategory.html',restaurant = restaurantToDelete)
 
 
 # Show items in a particular category.

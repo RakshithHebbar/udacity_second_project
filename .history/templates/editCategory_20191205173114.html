@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Update Item{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row" style="margin-top: 35px;">
+            <div class="col-md-7">
+               <h1>Update category {{ category.name }}</h1>
+
+               <form action="{{url_for('editCategory', category_id = category.id )}}" method = "post">
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1">Name</label>
+                      <input name="name" type="text" class="form-control" value="{{ item.name }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save text-and-icon"></i>Update</button>
+                    <a href="{{ url_for('home') }}"><button type="button" class="btn btn-danger"><i class="fas fa-times text-and-icon"></i>Cancel</button></a>
+                  </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
