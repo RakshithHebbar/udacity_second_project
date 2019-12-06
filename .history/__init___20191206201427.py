@@ -463,10 +463,10 @@ def delete_item(category_id, item_id):
         flash('%s Successfully Deleted' % itemToDelete.name)
         session.commit()
         return redirect(url_for('show_items_in_category',
-                        category_id=category_id))
+               category_id=category_id))
     else:
-        return render_template('delete_item.html',
-                               category_id=category_id, item=itemToDelete)
+        return render_templ\
+            ate('delete_item.html', category_id=category_id, item=itemToDelete)
 
 
 if __name__ == '__main__':

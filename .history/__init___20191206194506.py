@@ -87,9 +87,8 @@ def fbconnect():
     # in order to properly logout
     login_session['access_token'] = token
     # Get user picture
-    url = 'https://graph.facebook.com/v2.8/me/picture?\
-           access_token=%s&redirect=0&height=200\
-           &width=200' % token
+    url = 'https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&\
+    height=200&width=200' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -227,8 +226,8 @@ def createUser(login_session):
                    'email'], picture=login_session['picture'])
     session.add(newUser)
     session.commit()
-    user = session.query(User).filter_by(
-        email=login_session['email']).one_or_none()
+    user = session.query(User).fil\
+        ter_by(email=login_session['email']).one_or_none()
     return user.id
 
 
@@ -241,7 +240,7 @@ def getUserID(email):
     try:
         user = session.query(User).filter_by(email=email).one_or_none()
         return user.id
-    except Exception as ex:
+    except:
         return None
 
 
@@ -251,8 +250,8 @@ def gdisconnect():
     print ('In gdisconnect access token is %s', access_token)
     print (login_session['username'])
     if access_token is None:
-        response = make_response(json.dumps('Current user \
-                     not connected.'), 401)
+        response = make_re\
+            sponse(json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     url = 'https://accounts.google.com/o/oauth2/revoke?\
@@ -272,8 +271,8 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to \
-             revoke token for given user.', 400))
+        response = make_res\
+            ponse(json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -307,8 +306,7 @@ def home():
 @app.route('/category/new/', methods=['GET', 'POST'])
 def add_category():
     if request.method == 'POST':
-        newCategory = Category(name=request.form['name'],
-                               user_id=login_session['user_id'])
+        newCategory = Category(name=request.form['name'], user_id=login_session['user_id'])
         session.add(newCategory)
         flash('New Category %s Successfully Created' % newCategory.name)
         session.commit()
@@ -316,36 +314,31 @@ def add_category():
     else:
         return render_template('newCategory.html')
 
-
-# Edit a Category
+#Edit a Category
 @login_required
-@app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
+@app.route('/category/<int:category_id>/edit/', methods = ['GET', 'POST'])
 def editCategory(category_id):
-    editedCategory = session.query(Category).filter_by(
-                    id=category_id).one_or_none()
+    editedCategory = session.query(Category).filter_by(id = category_id).one_or_none()
     if request.method == 'POST':
         if request.form['name']:
             editedCategory.name = request.form['name']
             flash('Category Successfully Edited %s' % editedCategory.name)
             return redirect(url_for('home'))
     else:
-        return render_template('editCategory.html', category=editedCategory)
+        return render_template('editCategory.html', category = editedCategory)
 
-
-# Delete a category
+#Delete a category
 @login_required
-@app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
+@app.route('/category/<int:category_id>/delete/', methods = ['GET','POST'])
 def deleteCategory(category_id):
-    categoryToDelete = session.query(Category).filter_by(
-                       id=category_id).one_or_none()
+    categoryToDelete = session.query(Category).filter_by(id = category_id).one_or_none()
     if request.method == 'POST':
         session.delete(categoryToDelete)
         flash('%s Successfully Deleted' % categoryToDelete.name)
         session.commit()
         return redirect(url_for('home'))
     else:
-        return render_template('deleteCategory.html',
-                               category=categoryToDelete)
+        return render_template('deleteCategory.html',category = categoryToDelete)
 
 
 # Show items in a particular category.
@@ -358,6 +351,7 @@ def show_items_in_category(category_id):
     category = session.query(Category).filter_by(id=category_id).first()
     items = session.query(Item).filter_by(category_id=category.id).all()
     total = session.query(Item).filter_by(category_id=category.id).count()
+    print('total is %s' %total)
     return render_template(
         'items.html',
         category=category,
@@ -382,7 +376,6 @@ def exists_item(item_id):
     else:
         return False
 
-
 # View an item by its ID.
 @app.route('/catalog/item/<int:item_id>/')
 def view_item(item_id):
@@ -401,13 +394,12 @@ def view_item(item_id):
         flash('We are unable to process your request right now.')
         return redirect(url_for('home'))
 
-
-# Create a new  item
+#Create a new  item
 @login_required
-@app.route('/category/<int:category_id>/new/', methods=['GET', 'POST'])
+@app.route('/category/<int:category_id>/new/',methods=['GET','POST'])
 def add_item_by_category(category_id):
-    category = session.query(Category).filter_by(
-               id=category_id).one_or_none()
+    category = session.query(Category).filter_by(id=
+                                                 category_id).one_or_none()
     if request.method == 'POST':
         newItem = Item(name=request.form['name'],
                        description=request.form['description'],
@@ -462,12 +454,11 @@ def delete_item(category_id, item_id):
         session.delete(itemToDelete)
         flash('%s Successfully Deleted' % itemToDelete.name)
         session.commit()
-        return redirect(url_for('show_items_in_category',
-                        category_id=category_id))
+        return redir\
+            ect(url_for('show_items_in_category', category_id=category_id))
     else:
-        return render_template('delete_item.html',
-                               category_id=category_id, item=itemToDelete)
-
+        return render_templ\
+            ate('delete_item.html', category_id=category_id, item=itemToDelete)
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

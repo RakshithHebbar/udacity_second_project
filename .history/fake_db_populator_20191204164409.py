@@ -22,40 +22,44 @@ user1 = User(
 session.add(user1)
 session.commit()
 
-category_json = json.loads("""{"all_categories": [
-    {
-        'name' : 'Snowboarding',
-        'user': user1
-    },
-    {
-        'name': 'Basketball',
-        'user': user1
-    },
-    {
-        'name': 'Foosball',
-        'user': user1
-    },
-    {
-        'name': 'Baseball',
-        'user': user1
-    },
-    {
-        'name': 'Frisbee',
-        'user': user1
-    },
-    {
-        'name': 'Soccer',
-        'user': user1
-    }
-]}""")
-
-
-for e in category_json['all_categories']:
-category_input = Category(
-name=str(e['name']),   
-user_id=e['user']
+category1 = Category(
+    name='Snowboarding',
+    user=user1
 )
-session.add(category_input)
+
+
+category2 = Category(
+    name='Basketball',
+    user=user1
+)
+
+
+category3 = Category(
+    name='Foostball',
+    user=user1
+)
+
+category4 = Category(
+    name='Baseball',
+    user=user1
+)
+
+category5 = Category(
+    name='Frisbee',
+    user=user1
+)
+
+category6 = Category(
+    name='Soccer',
+    user=user1
+)
+
+session.add(category1)
+session.add(category2)
+session.add(category3)
+session.add(category4)
+session.add(category5)
+session.add(category6)
 session.commit()
 
 item1 = Item(

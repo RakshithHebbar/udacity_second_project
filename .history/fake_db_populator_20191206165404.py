@@ -50,12 +50,12 @@ category_json = json.loads("""{"all_categories": [
 ]}""")
 
 
-for e in category_json['all_categories']:
-category_input = Category(
-name=str(e['name']),   
-user_id=e['user']
-)
-session.add(category_input)
+session.add(category1)
+session.add(category2)
+session.add(category3)
+session.add(category4)
+session.add(category5)
+session.add(category6)
 session.commit()
 
 item1 = Item(

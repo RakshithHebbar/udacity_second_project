@@ -466,7 +466,7 @@ def delete_item(category_id, item_id):
                         category_id=category_id))
     else:
         return render_template('delete_item.html',
-                               category_id=category_id, item=itemToDelete)
+                    category_id=category_id, item=itemToDelete)
 
 
 if __name__ == '__main__':

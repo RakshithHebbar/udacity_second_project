@@ -272,7 +272,7 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to \
+        response = make_response(json.dumps('Failed to\
              revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -321,8 +321,8 @@ def add_category():
 @login_required
 @app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
 def editCategory(category_id):
-    editedCategory = session.query(Category).filter_by(
-                    id=category_id).one_or_none()
+    editedCategory = session.query(Category).filt\
+                     er_by(id=category_id).one_or_none()
     if request.method == 'POST':
         if request.form['name']:
             editedCategory.name = request.form['name']
@@ -336,8 +336,8 @@ def editCategory(category_id):
 @login_required
 @app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
-    categoryToDelete = session.query(Category).filter_by(
-                       id=category_id).one_or_none()
+    categoryToDelete = session.query(Category).fil\
+                      ter_by(id=category_id).one_or_none()
     if request.method == 'POST':
         session.delete(categoryToDelete)
         flash('%s Successfully Deleted' % categoryToDelete.name)
@@ -406,8 +406,8 @@ def view_item(item_id):
 @login_required
 @app.route('/category/<int:category_id>/new/', methods=['GET', 'POST'])
 def add_item_by_category(category_id):
-    category = session.query(Category).filter_by(
-               id=category_id).one_or_none()
+    category = session.query(Category).filter_by(id=cate
+                                                 gory_id).one_or_none()
     if request.method == 'POST':
         newItem = Item(name=request.form['name'],
                        description=request.form['description'],
@@ -462,11 +462,11 @@ def delete_item(category_id, item_id):
         session.delete(itemToDelete)
         flash('%s Successfully Deleted' % itemToDelete.name)
         session.commit()
-        return redirect(url_for('show_items_in_category',
-                        category_id=category_id))
+        return redir\
+            ect(url_for('show_items_in_category', category_id=category_id))
     else:
-        return render_template('delete_item.html',
-                               category_id=category_id, item=itemToDelete)
+        return render_templ\
+            ate('delete_item.html', category_id=category_id, item=itemToDelete)
 
 
 if __name__ == '__main__':
