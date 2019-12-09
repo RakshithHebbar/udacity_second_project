@@ -37,19 +37,6 @@ session = DBSession()
 xrange = range
 
 
-@app.route('/categories/<int:category_id>/items/JSON')
-def categoryMenuJSON(category_id):
-    category = session.query(Category).filter_by(id=category_id).one_or_none
-    items = session.query(Item).filter_by(
-        category_id=category_id).all()
-    return jsonify(Items=[i.serialize for i in items])
-
-@app.route('/categories/<int:category_id>/item/<int:item_id>/JSON')
-def itemJSON(category_id,item_id):
-    item = session.query(Item).filter_by(id = menu_id, category_id = category_id).all()
-    return jsonify(Item=[i.serialize for i in menuitem])
-
-
 @app.route('/login/')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
