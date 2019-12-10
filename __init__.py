@@ -46,8 +46,8 @@ def categoryMenuJSON(category_id):
 
 @app.route('/categories/<int:category_id>/item/<int:item_id>/JSON')
 def itemJSON(category_id,item_id):
-    item = session.query(Item).filter_by(id = menu_id, category_id = category_id).all()
-    return jsonify(Item=[i.serialize for i in menuitem])
+    item = session.query(Item).filter_by(id = item_id, category_id = category_id).all()
+    return jsonify(Item=[i.serialize for i in item])
 
 
 @app.route('/login/')
@@ -441,7 +441,7 @@ def add_item_by_category(category_id):
            methods=['GET', 'POST'])
 def edit_item(category_id, item_id):
     editedItem = session.query(Item).filter_by(id=item_id).one_or_none()
-    if session['user_id'] != editedItem.user_id:
+    if login_session['user_id'] != editedItem.user_id:
         flash("You were not authorised to access that page.")
         return redirect('/login')
     category = session.query(Category).filter_by(id=category_id).one_or_none()
@@ -469,7 +469,7 @@ def edit_item(category_id, item_id):
            methods=['GET', 'POST'])
 def delete_item(category_id, item_id):
     itemToDelete = session.query(Item).filter_by(id=item_id).one_or_none()
-    if session['user_id'] != itemToDelete.user_id:
+    if login_session['user_id'] != itemToDelete.user_id:
         flash("You were not authorised to access that page.")
         return redirect('/login')
     if request.method == 'POST':
@@ -486,4 +486,4 @@ def delete_item(category_id, item_id):
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=80)
